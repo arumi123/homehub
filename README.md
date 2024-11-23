@@ -12,9 +12,6 @@
 - AWS との連携をしたため、複数の部屋に増やすことにも対応するなど高い拡張性を備えています。
 - IaCの考え方に基づき、teraform,dockerを使用することで、デプロイを容易にしています。
 
-## 使用方法
-- dockerによって環境構築を簡単にする予定です。
-
 ## ドキュメント
 以下のリンクから、プロジェクトに関する詳細なドキュメントにアクセスできます。
 
@@ -44,3 +41,83 @@
 
 - [ロードマップ](docs/roadmap.md)  
   プロジェクトの将来の計画や開発の方向性を示した文書です。
+
+## 使用方法
+raspizeroに下記手順でdokcerをインストールします
+
+必要なパッケージのインストール:
+~~~bash
+sudo apt update
+sudo apt install -y \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
+~~~
+
+Docker の GPG キーを追加:
+~~~bash
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+~~~
+
+リポジトリを追加:
+~~~bash
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+~~~
+
+Docker のインストール:
+~~~bash
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io
+~~~
+
+動作確認:
+~~~bash
+sudo docker run hello-world
+~~~
+
+hello-world コンテナが正しく動作すれば、Docker はインストール完了です。
+出力例:
+~~~bash
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+~~~
+
+Docker をsudo なしで使用するために、現在のユーザーを docker グループに追加。
+
+bash
+コードをコピーする
+sudo usermod -aG docker $USER
+変更を反映 (ログアウト & 再ログイン):
+
+現在のターミナルを閉じて再ログインします。
+確認:
+
+bash
+コードをコピーする
+docker run hello-world
+4. Docker Compose のインストール
+最新版の Docker Compose をインストール
+Compose バイナリをダウンロード:
+
+bash
+コードをコピーする
+sudo curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+実行権限を付与:
+
+bash
+コードをコピーする
+sudo chmod +x /usr/local/bin/docker-compose
+動作確認:
+
+bash
+コードをコピーする
+docker-compose --version
+出力例:
+
+plaintext
+コードをコピーする
+Docker Compose version v2.x.x

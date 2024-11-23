@@ -1,38 +1,26 @@
 # ベースイメージとしてNode.jsを使用 (Pythonもインストール可能な軽量のLinuxベース)
-FROM node:14-buster
+FROM arm32v6/node:20.18.1-alpine3.20
+
+# shadow Python homebridge homebridge-config-ui-x をインストール　 
+RUN apk update \
+    && apk add python3 py3-pip shadow \
+    && npm install -g --unsafe-perm homebridge homebridge-config-ui-x \
+
+# homebridge_user というユーザを追加
+RUN useradd -m -s /bin/sh homebridge_user
 
 # 作業ディレクトリを設定
-WORKDIR /usr/src/app
+WORKDIR /home/homebridge_user
 
-# Pythonのインストール
-RUN apt-get update && apt-get install -y \
-    python3 \
-    python3-pip \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# Python パッケージのインストール (必要に応じて)
-RUN pip3 install --upgrade pip
-# 例として Flask をインストール
-RUN pip3 install flask
-
-# Homebridgeのインストール
-RUN npm install -g --unsafe-perm homebridge
-
-# HomebridgeのUIプラグインのインストール
-RUN npm install -g --unsafe-perm homebridge-config-ui-x
-
-# Homebridgeの設定ファイルディレクトリを作成
-RUN mkdir -p /homebridge/config
-VOLUME /homebridge
-
-# Node.jsのパッケージインストール (必要に応じて)
-# 例として Express をインストール
-RUN npm install express
+# Homebridgeを作成
+RUN mkdir .homebridge
+COPY ../config/config.json /.homebridge/config.json
+RUN chown -R homebridge_user:homebridge_user /home/homebridge_user/.homebridge
 
 # ホストからのポートをエクスポート
-EXPOSE 8581  # Homebridge UI 用のポート
-EXPOSE 5000  # Flask 用のポート
+EXPOSE 51826  # Homebridge 用のポート
+EXPOSE 8080  # Homebridge UI 用のポート
 
 # デフォルトコマンドとしてHomebridgeを起動
-CMD homebridge
+USER homebridge_user
+CMD ["homebridge"]

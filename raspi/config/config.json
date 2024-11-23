@@ -1,8 +1,8 @@
 {
-    "bridge": {
+    "bridge":{
         "name": "Homebridge 9695",
         "username": "0E:42:BE:DC:96:95",
-        "port": 51090,
+        "port": 51826,
         "pin": "816-76-290",
         "advertiser": "avahi"
     },
@@ -10,7 +10,7 @@
     "platforms": [
         {
             "name": "Config",
-            "port": 8581,
+            "port": 8080,
             "platform": "config"
         },
         {
