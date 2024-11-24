@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   homebridge:
-    image: dbf5fb275f2d # 起動するコンテナIDに書き換える。(githubpackagesから持ってこれるようにする)
+    image: ghcr.io/arumi123/homehub/homebridge_arm32v6:v1.0
     container_name: homebridge
     ports:
       - "51826:51826"
