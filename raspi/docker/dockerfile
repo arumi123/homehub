@@ -14,12 +14,13 @@ WORKDIR /home/homebridge_user
 
 # Homebridgeを作成
 RUN mkdir .homebridge
-COPY ../config/config.json /.homebridge/config.json
+COPY ./config.json /.homebridge/config.json
 RUN chown -R homebridge_user:homebridge_user /home/homebridge_user/.homebridge
 
-# ホストからのポートをエクスポート
-EXPOSE 51826  # Homebridge 用のポート
-EXPOSE 8080  # Homebridge UI 用のポート
+# Homebridge 用にホストからのコンテナのポートをリンク
+EXPOSE 51826  
+# Homebridge UI 用にホストからのコンテナのポートをリンク
+EXPOSE 8080
 
 # デフォルトコマンドとしてHomebridgeを起動
 USER homebridge_user

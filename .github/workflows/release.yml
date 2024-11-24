@@ -1,0 +1,39 @@
+name: Deploy to Raspberry Pi Zero
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "Running on Raspberry Pi Zero!"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    # コードのチェックアウト
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Dockerビルド (Raspberry Pi Zero用)
+    - name: Build Docker Image for ARM
+      run: |
+        docker buildx create --use --name builder
+        docker buildx build \
+          --platform linux/arm/v6 \
+          -t your-docker-image-name:latest \
+          --push .
+
+    # Raspberry Pi Zero へデプロイ
+    - name: Deploy to Raspberry Pi
+      env:
+        PI_USER: your-pi-user
+        PI_HOST: your-pi-host
+        PI_PATH: /path/to/deploy
+      run: |
+        ssh $PI_USER@$PI_HOST "docker pull your-docker-image-name:latest && docker run -d -p 80:80 your-docker-image-name"
