@@ -18,17 +18,9 @@
             "name": "Cmd4",
             "accessories": [
                 {
-                    "type": "Switch",
-                    "name": "Server",
-                    "displayName": "Server",
-                    "on": "true",
-                    "polling": true,
-                    "state_cmd": "/var/lib/homebridge/node_modules/switch.sh"
-                },
-                {
                     "type": "Lightbulb",
-                    "name": "リビング",
-                    "displayName": "リビング",
+                    "name": "Re0207",
+                    "displayName": "照明",
                     "on": "true",
                     "brightness": "1",
                     "colorTemperature": "1",
@@ -37,7 +29,8 @@
                 },
                 {
                     "type": "HeaterCooler",
-                    "displayName": "MyHeaterCooler",
+                    "name":"Panasonicac",
+                    "displayName": "エアコン",
                     "active": "ACTIVE",
                     "currentHeaterCoolerState": "HEATING",
                     "targetHeaterCoolerState": "AUTO",
@@ -53,14 +46,6 @@
                     "model": "Anything",
                     "serialNumber": "12345",
                     "stateChangeResponseTime": 3
-                },
-                {
-                    "type": "Fanv1",
-                    "name": "MY_Fanv1",
-                    "displayName": "MY_Fanv1",
-                    "on": "0",
-                    "rotationDirection": "1",
-                    "state_cmd": "bash /home/shun/switch.sh"
                 }
             ]
         }
