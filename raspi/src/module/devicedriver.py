@@ -230,7 +230,7 @@ class ClRs2(Bulb):
         else:
             # 電源オン 明るさの変更
             self.change_mode("on")
-            self.change_bright((target_brightness // 10) - 1)
+            self.change_brightness((target_brightness // 10) - 1)
             self.write_status("brightness",target_brightness)
             print("明るさを",((target_brightness // 10) - 1),"に変えた")
             
@@ -264,19 +264,25 @@ class ClRs2(Bulb):
             sleep(0.5)
 
     def change_brightness(self, target_brightness):
+        # 規定外の数値が引数に来た場合処理
         if not (0 <= target_brightness <= 9):
             raise ValueError("Invalid brightness value. Please specify a value between 0 and 9.")
-        
-        current_brightness = self.brightness
-        step = 1 if target_brightness > current_brightness else -1
-        
-        while current_brightness != target_brightness:
-            current_brightness += step
-            self.brightness = current_brightness
-            print(f"Changing brightness to {current_brightness}")
-            # リモコン操作のロジックをここに追加
-            sleep(0.5)
 
+        now_brightness = (self.get_status("brightness") // 10) - 1
+
+        while target_brightness != now_brightness:
+            if target_brightness > now_brightness:
+                # 明るくするリモコン操作ロジック
+                print("一段階明るくした")
+                now_brightness += 1
+                sleep(0.4)
+
+            else:
+                # 暗くするリモコン操作ロジック
+                print("一段階暗くした")
+                now_brightness -= 1
+                sleep(0.4)
+            
     def change_colortemp(self,target_colortemp):
         if not (0 <= temp <= 5):
             raise ValueError("Invalid brightness value. Please specify a value between 0 and 5.")
