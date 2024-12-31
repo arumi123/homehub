@@ -142,88 +142,97 @@ class Re0207(Bulb):
 class ClRs2(Bulb):
     def brightness(self, target_brightness):
         # brightが0~100の間にない場合は、エラーを返し、値0を代入する
-        if not (0 <= self.getstatus("brightness")  <= 100):
+        if not (0 <= self.get_status("brightness")  <= 100):
             raise ValueError("Invalid brightness value. Please specify a value between 0 and 100.")
             self.setstatus("brightness",0)
             
         # 場合分けして赤外線を送信
+        # if target_brightness == 0:
+        #     # 電源をオフにするコマンド
+        #     self.change_mode("off")
+        #     self.write_status("brightness",target_brightness)
+
+        # elif 1 <= target_brightness <= 5:
+        #     # 常夜灯とつけるコマンド
+        #     self.change_mode("nightmode")
+        #     self.write_status("brightness",target_brightness)
+
+        # elif 6 <= target_brightness <= 10:
+        #     # 明るさ1
+        #     self.change_mode("on")
+        #     self.change_brightness(1)
+        #     self.write_status("brightness",target_brightness)
+
+        # elif 11 <= target_brightness <= 20:
+        #     # 明るさ2
+        #     self.change_mode("on")
+        #     self.change_brightness(2)
+        #     self.write_status("brightness",target_brightness)
+
+        # elif 21 <= target_brightness <= 30:
+        #     # 明るさ3
+        #     self.change_mode("on")
+        #     self.change_brightness(3)
+        #     self.write_status("brightness",target_brightness)
+
+        # elif 31 <= target_brightness <= 40:
+        #     # 明るさ4
+        #     self.change_mode("on")
+        #     self.change_brightness(4)
+        #     self.write_status("brightness",target_brightness)
+
+        # elif 41 <= target_brightness <= 50:
+        #     # 明るさ5
+        #     self.change_mode("on")
+        #     self.change_brightness(5)
+        #     self.write_status("brightness",target_brightness)
+
+        # elif 51 <= target_brightness <= 60:
+        #     # 明るさ6
+        #     self.change_mode("on")
+        #     self.change_brightness(6)
+        #     self.write_status("brightness",target_brightness)
+
+        # elif 61 <= target_brightness <= 70:
+        #     # 明るさ7
+        #     self.change_mode("on")
+        #     self.change_brightness(7)
+        #     self.write_status("brightness",target_brightness)
+
+        # elif 71 <= target_brightness <= 80:
+        #     # 明るさ8
+        #     self.change_mode("on")
+        #     self.change_brightness(8)
+        #     self.write_status("brightness",target_brightness)
+
+        # elif 81 <= target_brightness <= 90:
+        #     # 明るさ9
+        #     self.change_mode("on")
+        #     self.change_brightness(9)
+        #     self.write_status("brightness",target_brightness)
+
+        # elif 91 <= target_brightness <= 100:
+        #     # 明るさ10
+        #     self.change_mode("on")
+        #     self.change_brightness(10)
+        #     self.write_status("brightness",target_brightness)
+
         if target_brightness == 0:
-            # 電源をオフにするコマンド
+            # 電源オフ
             self.change_mode("off")
             self.write_status("brightness",target_brightness)
 
-        elif 1 <= target_brightness <= 5:
-            # 常夜灯とつけるコマンド
+        elif 1 <= target_brightness <= 9:
+            # 常夜灯
             self.change_mode("nightmode")
             self.write_status("brightness",target_brightness)
 
-        elif 6 <= target_brightness <= 10:
-            # 明るさ1
-            self.change_mode("on")
-            self.change_brightness(1)
-            self.write_status("brightness",target_brightness)
-
-        elif 11 <= target_brightness <= 20:
-            # 明るさ2
-            self.change_mode("on")
-            self.change_brightness(2)
-            self.write_status("brightness",target_brightness)
-
-        elif 21 <= target_brightness <= 30:
-            # 明るさ3
-            self.change_mode("on")
-            self.change_brightness(3)
-            self.write_status("brightness",target_brightness)
-
-        elif 31 <= target_brightness <= 40:
-            # 明るさ4
-            self.change_mode("on")
-            self.change_brightness(4)
-            self.write_status("brightness",target_brightness)
-
-        elif 41 <= target_brightness <= 50:
-            # 明るさ5
-            self.change_mode("on")
-            self.change_brightness(5)
-            self.write_status("brightness",target_brightness)
-
-        elif 51 <= target_brightness <= 60:
-            # 明るさ6
-            self.change_mode("on")
-            self.change_brightness(6)
-            self.write_status("brightness",target_brightness)
-
-        elif 61 <= target_brightness <= 70:
-            # 明るさ7
-            self.change_mode("on")
-            self.change_brightness(7)
-            self.write_status("brightness",target_brightness)
-
-        elif 71 <= target_brightness <= 80:
-            # 明るさ8
-            self.change_mode("on")
-            self.change_brightness(8)
-            self.write_status("brightness",target_brightness)
-
-        elif 81 <= target_brightness <= 90:
-            # 明るさ9
-            self.change_mode("on")
-            self.change_brightness(9)
-            self.write_status("brightness",target_brightness)
-
-        elif 91 <= target_brightness <= 100:
-            # 明るさ10
-            self.change_mode("on")
-            self.change_brightness(10)
-            self.write_status("brightness",target_brightness)
-
-        if bright == 0:
-            self.change_mode("off")
-        elif 1 <= bright <= 9:
-            self.change_mode("nightmode")
         else:
+            # 電源オン 明るさの変更
             self.change_mode("on")
-            self.change_bright((bright // 10) - 1)
+            self.change_bright((target_brightness // 10) - 1)
+            self.write_status("brightness",target_brightness)
+            print("明るさを",((target_brightness // 10) - 1),"に変えた")
             
     def colortemp(self, temp):
         # tempが0~5の間にない場合はエラーを返す
@@ -231,10 +240,21 @@ class ClRs2(Bulb):
             raise ValueError("Invalid brightness value. Please specify a value between 0 and 5.")
         
     
-    def change_mode(self,mode):
-        mode_sequence = ["on","night","off"]
-        current_index = mode_sequence.index(self.current_mode)
-        target_index = mode_sequence.index(mode)
+    def change_mode(self,target_mode):
+        # 現在のモードを推測
+        if self.get_status("brightness") == 0 :
+            current_mode = "off"
+        elif 1 <= self.get_status("brightness") <= 9 :
+            current_mode = "nightmode"
+        else:
+            current_mode = "on"
+
+        # モードの流れを定義
+        mode_sequence = ["on","nightmode","off"]
+
+        # 現在のモードと変更するモードとの差の分だけ、ボタンを押す
+        current_index = mode_sequence.index(current_mode)
+        target_index = mode_sequence.index(target_mode)
 
         while current_index != target_index:
             current_index = (current_index + 1) % len(mode_sequence)
