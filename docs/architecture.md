@@ -50,6 +50,87 @@ graph TD;
 - **役割**: センサーからデータを収集し、AWS IoT Coreに送信します。
 - **使用技術**: [使用するプログラミング言語やライブラリ、OSなど]
 - **動作**: 定期的にセンサーデータを測定し、MQTTプロトコルを介してデータをAWSに送信します。
+- **クラス図**
+~~~mermaid
+classDiagram
+    class IRController{
+        
+    }
+
+    class Device{
+        <<abstruct>>
+        +getstatus()
+        -setstatuse()
+    }
+
+    class Bulb {
+        <<interface>>
+        +brightness()*
+        +colortemp()*
+    }
+
+    class Re0207 {
+        +brightness()
+        +colortemp()
+        -change_mode()
+        -change_brightness()
+        -change_colortemp()
+    }
+
+    class ClRs2 {
+        +brightness()
+        +colortemp()
+        -change_mode()
+        -change_brightness()
+        -change_colortemp() 
+    }
+
+    class HeaterCooler {
+        <<interface>>
+        +mode()*
+        +temp()*
+    }
+
+    class PanasonicAc {
+        +getstate()
+        +mode()
+        +temp()      
+    }
+
+    class Cmd4Client {
+        
+    }
+
+    class CliOperater {
+
+    }
+
+    class GptClient {
+
+    }
+
+    Bulb --|> Device
+    HeaterCooler --|> Device
+
+    Re0207 --|> Bulb
+    ClRs2 --|> Bulb
+    PanasonicAc --|> HeaterCooler
+    
+
+    Re0207 ..> IRController : calls
+    ClRs2 ..> IRController : calls
+    PanasonicAc ..> IRController : calls
+
+    Cmd4Client ..> Re0207 : calls
+    CliOperater ..> Re0207 : calls
+    GptClient ..> Re0207 : calls
+    Cmd4Client ..> ClRs2 : calls
+    CliOperater ..> ClRs2 : calls
+    GptClient ..> ClRs2 : calls
+    Cmd4Client ..> PanasonicAc : calls
+    CliOperater ..> PanasonicAc : calls
+    GptClient ..> PanasonicAc : calls
+~~~
 
 ### 2. AWS IoT Core
 - **役割**: Raspberry Piから送信されたデータを受信し、処理します。
@@ -75,41 +156,6 @@ graph TD;
 ## Security
 - **認証**: AWS IoT Coreに接続する際は、X.509証明書を使用して認証します。
 - **アクセス管理**: IAMポリシーを用いて、Lambda関数やDynamoDBへのアクセスを制限します。
-
-## クラス図
-```mermaid
-classDiagram
-    class Device {
-        <<abstract>>
-        +turn_on()
-        +turn_off()
-        +execute_command(command, *args)
-    }
-
-    class AirConditioner {
-        +set_temperature(temperature) 
-    } 
-    Device <|-- AirConditioner 
-
-    class Light { 
-        +set_brightness(level) 
-    } 
-    Device <|-- Light 
-
-    class DeviceFactory { 
-        +create_device(device_type, name): Device 
-    } 
-
-    class GPTController { 
-        -device: Device 
-        +control_device_via_gpt(gpt_command): void 
-    }
-
-    GPTController --> Device 
-    DeviceFactory --> Device 
-    DeviceFactory o-- AirConditioner 
-    DeviceFactory o-- Light
-```
 
 ## Conclusion
 このアーキテクチャにより、リアルタイムでセンサーデータを収集・処理し、必要に応じてデータを保存・分析するシステムが実現されます。

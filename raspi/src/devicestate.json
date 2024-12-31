@@ -1,0 +1,28 @@
+{
+    "device": [
+        {
+            "device_name": "RE0207",
+            "class_name": "Re0207",
+            "type": "bulb",
+            "brightness": 50,
+            "color_temperature": 0,
+            "last_operated": 0
+        },
+        {
+            "device_name": "CL-RS2",
+            "class_name": "ClRs2",
+            "type": "bulb",
+            "brightness": 80,
+            "color_temperature": 0,
+            "last_operated": 0
+        },
+        {
+            "device_name": "Panasonic",
+            "class_name": "Panasonic",
+            "type": "HeaterCooler",
+            "mode": 0,
+            "temperature": 0,
+            "last_operated": 0
+        }
+    ]
+}
