@@ -1,7 +1,9 @@
 # System Architecture
 
 ## Overview
-このドキュメントは、システムアーキテクチャを説明します。このシステムは、Raspberry PiとAWS,iphone,ChatGPTを連携させて実現します。
+このドキュメントは、本プロジェクトの全体的な設計およびアーキテクチャについて説明します。
+- 対象読者: 新規開発者、既存のメンテナンス担当者
+- 目的: システムの構造を把握し、開発効率と保守性を向上させるため
 
 ## Architecture Diagram
 ```mermaid
@@ -10,8 +12,8 @@ graph TD;
         Homeapp[Homeapp]
     end
 
-    subgraph ChatGPTserver [ChatGPTserver]
-        ChatGPT[ChatGPT]
+    subgraph GPTserver [GPT server]
+        GPTAPI[GPT API]
     end
 
     subgraph AWS [AWS]
@@ -40,7 +42,7 @@ graph TD;
     pythonmodule -->|IR| ac
     pythonmodule -->|ipc| Homebridge
     pythonmodule -->|ipc| data.json
-    pythonmodule -->|http?| ChatGPT
+    pythonmodule -->|http?| GPTAPI
     ChatGPT -->|http?| pythonmodule
 ```
 
@@ -157,8 +159,12 @@ classDiagram
 - **認証**: AWS IoT Coreに接続する際は、X.509証明書を使用して認証します。
 - **アクセス管理**: IAMポリシーを用いて、Lambda関数やDynamoDBへのアクセスを制限します。
 
-## Conclusion
-このアーキテクチャにより、リアルタイムでセンサーデータを収集・処理し、必要に応じてデータを保存・分析するシステムが実現されます。
+## Deployment Architecture
+### 環境
+- **開発環境**: 
+- **本番環境**: 
 
+### CI/CD
+- **GitHub Actions**: テスト、ビルド、デプロイを自動化。
 
-
+### 

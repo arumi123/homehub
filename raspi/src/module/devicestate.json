@@ -12,7 +12,7 @@
             "device_name": "CL-RS2",
             "class_name": "ClRs2",
             "type": "bulb",
-            "brightness": 20,
+            "brightness": 0,
             "color_temperature": 0,
             "last_operated": 0
         },

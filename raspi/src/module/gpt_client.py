@@ -1,1 +1,2 @@
-class Gptclient:
+class GPTClient:
+    pass
